@@ -20,6 +20,7 @@
 *.mod
 *.smod
 
+
 # Compiled Static libraries
 *.lai
 *.la
@@ -30,3 +31,7 @@
 *.exe
 *.out
 *.app
+*.dSYM
+
+cmake-build-debug
+.idea
