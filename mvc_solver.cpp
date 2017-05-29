@@ -46,22 +46,8 @@ void mvc_solver::init_dscore()
 void mvc_solver::construct()
 {
     using pip =  tuple<int, int *>;
-    static pip cnt_sorted[maxn];
     static int cnt[maxn];
-    if (uncov.size() == 0) return void(ans = partial);
-    for (int i = 1; i <= p_c; ++i) cnt_sorted[i] = make_tuple(i, &(cnt[i] = 0));
-    for (int x : uncov) ++cnt[get<0>(conns[x])], ++cnt[get<1>(conns[x])];
-    sort(cnt_sorted + 1, cnt_sorted + p_c + 1, [](auto a, auto b) { return *get<1>(b) < *get<1>(a); });
-    ans = partial;
-    int u;
-    for (pip *p = cnt_sorted + 1; p <= cnt_sorted + p_c; --p)
-        if (u = *get<1>(*p))
-            for (int v : adj[u])
-            {
-                ans.ins(G[u][v]);
-                --cnt[u];
-                --cnt[v];
-            }
+    //FIXME 用pbds的堆
 }
 
 #define CHG(op1, op2)    c_d[u] = timest; partial.op1(u); dsc[u]  = -dsc[u]; for (int v : adj[u]) if (!partial(v)) uncov.op2(G[u][v]);

@@ -15,7 +15,7 @@ class numvc : public mvc_solver
 public:
     numvc(int _p_c, int _ed_c, pii* conn);
 
-    void iterate() override;
+    bool iterate(int _timest_) override;
 };
 
 

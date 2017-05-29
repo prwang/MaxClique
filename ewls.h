@@ -13,7 +13,6 @@ class ewls : public mvc_solver
     int dlt;
 public:
     ewls(int _dlt, int n, int m, pii* conn) : dlt(_dlt),  mvc_solver(n, m, conn) {}
-    void iterate() override;
 };
 
 

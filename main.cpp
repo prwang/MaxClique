@@ -9,9 +9,9 @@ bool allow_run = true;
 
 int main(int argc, char **argv)
 {
-    assert(argc == 3);
-    int maxstep = atoi(argv[1]), dlt = atoi(argv[2]);
+
     int n, m;
+    freopen("frb30-15-1.mis", "r", stdin);
     scanf("%*s%*s%d%d", &n, &m);
     static pii conn[maxn * maxn];
     for (int i = 0; i < m; ++i) scanf("%*s%d%d", &get<0>(conn[i]), &get<1>(conn[i]));
@@ -22,9 +22,15 @@ int main(int argc, char **argv)
         fprintf(stderr, "intruppting...");
         allow_run = false;
     });
-    while (allow_run)
-    {
-        solver->iterate();
-    }
+    for (int ts = 1; allow_run; ++ts)
+        if (solver->iterate(ts))
+        {
+            solver->validate();
+            printf("%d,, ", solver->mis.size());
+            for (int x : solver->mis) printf("%d,", x);
+            puts("");
+        }
+
+
 
 }
