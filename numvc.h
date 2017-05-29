@@ -8,7 +8,7 @@
 
 #include "mis_solver.h"
 
-class numvc : protected mis_solver
+class numvc : public mis_solver
 {
     bool conf[maxn];
 

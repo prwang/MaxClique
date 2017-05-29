@@ -1,13 +1,10 @@
 #include "main.h"
 #include "ewls.h"
+#include "numvc.h"
 
 mt19937 RAND((random_device())());
 
-
-void calcds();
-void construct();
-typedef tuple<int, int> pii;
-pii exchange();
+int allow_run = true;
 int main(int argc, char** argv)
 {
     assert(argc == 3);
@@ -16,7 +13,7 @@ int main(int argc, char** argv)
     scanf("%*s%*s%d%d", &n, &m);
     static pii conn[maxn * maxn];
     for (int i = 0; i < m; ++i) scanf("%*s%d%d", &get<0>(conn[i]), &get<1>(conn[i]));
-    ewls* solver (new ewls(n, m, conn)); unique_ptr<ewls> __solver__(solver);
-    solver->solve(maxstep, dlt);
-
+    mis_solver* solver (new numvc(n, m, conn)); unique_ptr<mis_solver> __solver__(solver);
+    signal(SIGINT, [](int x) { fprintf(stderr, "intruppting..."); allow_run = false; });
+    while (allow_run) solver->iterate();
 }
