@@ -6,13 +6,13 @@
 #define MAXCLIQUE_EWLS_H
 
 
-#include "mis_solver.h"
+#include "mvc_solver.h"
 
-class ewls : public mis_solver
+class ewls : public mvc_solver
 {
     int dlt;
 public:
-    ewls(int _dlt, int n, int m, pii* conn) : dlt(_dlt),  mis_solver(n, m, conn) {}
+    ewls(int _dlt, int n, int m, pii* conn) : dlt(_dlt),  mvc_solver(n, m, conn) {}
     void iterate() override;
 };
 

@@ -6,9 +6,9 @@
 #define MAXCLIQUE_NUMVC_H
 
 
-#include "mis_solver.h"
+#include "mvc_solver.h"
 
-class numvc : public mis_solver
+class numvc : public mvc_solver
 {
     bool conf[maxn];
 
