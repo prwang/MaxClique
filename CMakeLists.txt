@@ -3,6 +3,6 @@ project(MaxClique)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp mis_solver.cpp mis_solver.h ewls.cpp ewls.h)
+set(SOURCE_FILES main.cpp mis_solver.cpp mis_solver.h ewls.cpp ewls.h numvc.cpp numvc.h)
 
 add_executable(MaxClique ${SOURCE_FILES})
