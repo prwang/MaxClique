@@ -47,7 +47,7 @@ protected:
     int G[maxn][maxn];
     int wgt[maxm];
     pii conns[maxm];
-    int dsc[maxn], c_d[maxn], p_c, ed_c, timest;
+    int dsc[maxn], c_d[maxn], p_c, ed_c, timest, tr;
     unord<maxn> adj[maxn], partial;
     unord<maxm> uncov;
 
@@ -58,6 +58,8 @@ public:
     mvc_solver(int _p_c, int _ed_c, pii *_conns);
     void construct();
     void validate();
+    void reset(const unord<maxn>& ans0);
+    void initdsc();
     virtual void ins_pans(int u);
     virtual void del_pans(int v);
     virtual bool iterate(int _timest_) { timest = _timest_; return false; };
