@@ -40,7 +40,8 @@ bool numvc::iterate(int _timest_)
     if (tot_wgt  >= gamma * ed_c)
     {
         fprintf(stderr, "forget begin...tot wgt is%d\n", tot_wgt);
-        for (int e = 0; e < ed_c; ++e) wgt[e] = int(rho * wgt[e]);
+        tot_wgt = 0;
+        for (int e = 0; e < ed_c; ++e) tot_wgt += wgt[e] = int(rho * wgt[e]);
         initdsc();
         fprintf(stderr, "forget end...tot wgt is%d\n", tot_wgt);
     }
