@@ -2,15 +2,18 @@
 // Created by prwang on 17-5-28.
 //
 
+#ifndef SINGLEFILE
 #include "mvc_solver.h"
-#include <ext/pb_ds/priority_queue.hpp>
+#endif
 
 template<class T> using heap = __gnu_pbds::priority_queue<T>;
 
-mvc_solver::mvc_solver(int _p_c, int _ed_c, pii *_conns) : p_c(_p_c), ed_c(_ed_c), partial(), tr(-1)
+mvc_solver::mvc_solver(int _p_c, int _ed_c, const pii *_conns)
+        : p_c(_p_c), ed_c(_ed_c), partial(), tr(-1), ans(), RAND((random_device()) ())
 {
     for (int i = 1; i <= _p_c; ++i)
         for (int j = 1; j <= _p_c; ++j) G[i][j] = p_c + 1;
+
     for (int i = 0; i < _ed_c; ++i)
     {
         int u, v;
@@ -20,6 +23,7 @@ mvc_solver::mvc_solver(int _p_c, int _ed_c, pii *_conns) : p_c(_p_c), ed_c(_ed_c
         adj[v].ins(u);
 
     }
+    for (int i = 1; i <= p_c; ++i) c_d[i] = 0;
     construct();
     partial = ans;
     initdsc();
@@ -93,7 +97,7 @@ int mvc_solver::max_oldest()
     return i;
 }
 
-void mvc_solver::validate()
+void mvc_solver::validate(unord<maxn>& mis)
 {
     mis = unord<maxn>();
     for (int i = 1; i <= p_c; ++i)
@@ -110,7 +114,7 @@ void mvc_solver::initdsc()
 void mvc_solver::reset(const unord<maxn>& ans0)
 {
     partial = ans = ans0;
-    timest = 0; tr = -1;
+    timest; tr = -1;
     for (int i = 1; i <= p_c; ++i) c_d[i] = 0;
     for (int i = 0; i < ed_c; ++i) wgt[i] = 1;
     new(&uncov) unord<maxm>();

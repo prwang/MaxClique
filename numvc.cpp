@@ -2,9 +2,11 @@
 // Created by prwang on 2017/5/29.
 //
 
+#ifndef SINGLEFILE
 #include "numvc.h"
+#endif
 
-numvc::numvc(int _p_c, int _ed_c, pii* conn, double _gamma, double _rho)
+numvc::numvc(int _p_c, int _ed_c, const  pii* conn, double _gamma, double _rho)
         : mvc_solver(_p_c, _ed_c, conn), tot_wgt(0), gamma(_gamma), rho(_rho)
 {
     for (int i = 1; i <= p_c; ++i) conf[i] = true;
@@ -26,7 +28,7 @@ bool numvc::iterate(int _timest_)
     conf[u] = false;
     for (int x : adj[u]) conf[x] = true;
 
-    tie(u, v) = conns[uncov.rand()];
+    tie(u, v) = conns[uncov.rand(RAND)];
     if (!conf[u] || (conf[v] && (dsc[v] > dsc[u] || (dsc[v] == dsc[u] && c_d[v] < c_d[u])))) swap(u, v);
 
     assert(conf[u]); ins_pans(tr = u);
@@ -39,11 +41,9 @@ bool numvc::iterate(int _timest_)
     }
     if (tot_wgt  >= gamma * ed_c)
     {
-        fprintf(stderr, "forget begin...tot wgt is%d\n", tot_wgt);
         tot_wgt = 0;
         for (int e = 0; e < ed_c; ++e) tot_wgt += wgt[e] = int(rho * wgt[e]);
         initdsc();
-        fprintf(stderr, "forget end...tot wgt is%d\n", tot_wgt);
     }
     return false;
 }

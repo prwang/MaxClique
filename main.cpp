@@ -1,19 +1,20 @@
+#ifndef SINGLEFILE
 #include "main.h"
 #include "ewls.h"
 #include "numvc.h"
+#endif
 
-mt19937 RAND((random_device()) ());
+
 
 
 bool allow_run = true;
 
-numvc solver;
 int main(int argc, char **argv)
 {
     using namespace std::chrono;
-    time_point t1 = high_resolution_clock::now();
+    auto t1 = high_resolution_clock::now();
     int n, m;
-    assert(argc == 2);
+    assert(argc == 3);
     FILE* f = fopen(argv[1], "r");
     int hint = atoi(argv[2]);
     fscanf(f, "%*s%*s%d%d", &n, &m);
@@ -26,21 +27,22 @@ int main(int argc, char **argv)
         else conn[i] = make_tuple(x, y);
     }
     sort(conn, conn + m); m = int(unique(conn, conn + m) - conn);
-    random_shuffle(conn, conn + m, [](int range) { return (uniform_int_distribution<int>(0, range - 1))(RAND); });
 
+    numvc &solver = *(new numvc);
     new(&solver) numvc(n, m, conn, .5 * n, .3);
     signal(SIGINT, [](int x)
     {
         fprintf(stderr, "intruppting...");
         allow_run = false;
     });
+    unord<maxn> mis;
     for (int ts = 1; allow_run; ++ts)
         if (solver.iterate(ts))
         {
-            solver.validate();
-            int anssize = solver.mis.size();
+            solver.validate(mis);
+            int anssize = mis.size();
             printf("%d,, ", anssize);
-            for (int x : solver.mis) printf("%d,", x);
+            for (int x : mis) printf("%d,", x);
             puts(""); fflush(stdout);
             fprintf(stderr, "\nans=%d ts = %d elapsed %.6f seconds", anssize,  ts, duration_cast<duration<double>>((high_resolution_clock::now() - t1)).count());
             if (anssize == hint) allow_run = false;

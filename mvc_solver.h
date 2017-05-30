@@ -1,11 +1,11 @@
 //
 // Created by prwang on 17-5-28.
 //
-
+#pragma once
+#ifndef SINGLEFILE
 #include "main.h"
+#endif
 
-#ifndef MAXCLIQUE_GRAPH_H
-#define MAXCLIQUE_GRAPH_H
 
 
 template<int N, int RG = N>
@@ -35,7 +35,8 @@ struct unord
         ary[rev[u] = realsize++] = u;
     }
 
-    int rand() const { return ary[(uniform_int_distribution<int>(0, realsize - 1))(RAND)]; }
+    template<class T> int rand(T RAND) const
+    { return ary[(uniform_int_distribution<int>(0, realsize - 1))(RAND)]; }
 
 private:
     int ary[N], rev[RG], realsize;
@@ -47,17 +48,18 @@ protected:
     int G[maxn][maxn];
     int wgt[maxm];
     pii conns[maxm];
-    int dsc[maxn], c_d[maxn], p_c, ed_c, timest, tr;
+    int dsc[maxn], c_d[maxn],p_c, ed_c, timest, tr;
     unord<maxn> adj[maxn], partial;
     unord<maxm> uncov;
 
+    mt19937 RAND;;
 public:
-    unord<maxn> ans, mis;
+    unord<maxn> ans;
     int max_oldest();
     mvc_solver(){}
-    mvc_solver(int _p_c, int _ed_c, pii *_conns);
+    mvc_solver(int _p_c, int _ed_c, const  pii *_conns);
     void construct();
-    void validate();
+    void validate(unord<maxn>& mis);
     void reset(const unord<maxn>& ans0);
     void initdsc();
     virtual void ins_pans(int u);
@@ -66,5 +68,3 @@ public:
     void dsc_modify(int u, int v, int val);
 };
 
-
-#endif //MAXCLIQUE_GRAPH_H
