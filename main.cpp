@@ -7,6 +7,7 @@ mt19937 RAND((random_device()) ());
 
 bool allow_run = true;
 
+numvc solver;
 int main(int argc, char **argv)
 {
 
@@ -15,22 +16,20 @@ int main(int argc, char **argv)
     scanf("%*s%*s%d%d", &n, &m);
     static pii conn[maxn * maxn];
     for (int i = 0; i < m; ++i) scanf("%*s%d%d", &get<0>(conn[i]), &get<1>(conn[i]));
-    mvc_solver *solver(new numvc(n, m, conn));
-    unique_ptr<mvc_solver> __solver__(solver);
+    sort(conn, conn + m); m = int(unique(conn, conn + m) - conn);
+
+    new(&solver) numvc(n, m, conn, .5 * n, .3);
     signal(SIGINT, [](int x)
     {
         fprintf(stderr, "intruppting...");
         allow_run = false;
     });
     for (int ts = 1; allow_run; ++ts)
-        if (solver->iterate(ts))
+        if (solver.iterate(ts))
         {
-            solver->validate();
-            printf("%d,, ", solver->mis.size());
-            for (int x : solver->mis) printf("%d,", x);
+            solver.validate();
+            printf("%d,, ", solver.mis.size());
+            for (int x : solver.mis) printf("%d,", x);
             puts("");
         }
-
-
-
 }
